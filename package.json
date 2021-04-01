@@ -1,0 +1,32 @@
+{
+    "name": "oracle-explorer-api",
+    "description": "Explorer API for the Flux Oracle",
+    "version": "1.0.0",
+    "main": "index.js",
+    "devDependencies": {
+        "@types/big.js": "^6.0.2",
+        "@types/jest": "^26.0.19",
+        "@types/mongodb": "^3.6.3",
+        "@types/node": "^14.14.14",
+        "nodemon": "^2.0.6",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.1.3"
+    },
+    "dependencies": {
+        "apollo-server": "^2.19.0",
+        "apollo-server-express": "^2.19.0",
+        "big.js": "^6.0.3",
+        "date-fns": "^2.16.1",
+        "dotenv": "^8.2.0",
+        "mongodb": "^3.6.3"
+    },
+    "scripts": {
+        "start": "npm run build && node 'dist/src/main.js'",
+        "build": "tsc -p .",
+        "dev": "npm run build:dev",
+        "build:dev": "nodemon 'src/main.ts' --exec 'ts-node' src/main.ts -e ts,graphql,json"
+    },
+    "keywords": [],
+    "author": "Flux Protocol",
+    "license": "ISC"
+}
