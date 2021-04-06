@@ -3,6 +3,12 @@ import { Db } from 'mongodb';
 import express from 'express';
 
 import * as dataRequest from './schemes/DataRequest';
+import * as oracleConfig from './schemes/OracleConfig';
+import * as resolutionWindow from './schemes/ResolutionWindow';
+import * as userStake from './schemes/UserStake';
+import * as outcomeStake from './schemes/OutcomeStake';
+import * as transactions from './schemes/Transaction';
+import * as whitelist from './schemes/WhitelistItem';
 
 import bootDatabase from './database';
 import { APP_PORT } from './constants';
@@ -24,9 +30,19 @@ async function main() {
         typeDefs: [
             typeDef,
             dataRequest.typeDef,
+            oracleConfig.typeDef,
+            resolutionWindow.typeDef,
+            userStake.typeDef,
+            outcomeStake.typeDef,
+            transactions.typeDef,
+            whitelist.typeDef,
         ],
         resolvers: [
             dataRequest.resolvers,
+            oracleConfig.resolvers,
+            resolutionWindow.resolvers,
+            transactions.resolvers,
+            whitelist.resolvers,
         ],
         tracing: true,
         debug: true,

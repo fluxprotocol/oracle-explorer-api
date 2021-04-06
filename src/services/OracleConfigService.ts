@@ -33,7 +33,7 @@ export function queryOracleConfigs(db: Db, query: FilterQuery<OracleConfig>, opt
     return collection.aggregate(pipeline);
 }
 
-export async function queryOracleConfigAsPagination(db: Db, query: FilterQuery<OracleConfig>, options: Partial<OracleConfigQueryOptions>): Promise<PaginationResult<DataRequest>> {
+export async function queryOracleConfigAsPagination(db: Db, query: FilterQuery<OracleConfig>, options: Partial<OracleConfigQueryOptions>): Promise<PaginationResult<OracleConfig>> {
     const collection = db.collection<OracleConfig>(ORACLE_CONFIG_COLLECTION_NAME);
     const finalOptions: OracleConfigQueryOptions = {
         ...options,

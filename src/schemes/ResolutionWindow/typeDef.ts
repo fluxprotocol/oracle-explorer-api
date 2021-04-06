@@ -11,9 +11,8 @@ const typeDef = gql`
         date: String
         block_height: String
 
-        # TODO: Add outcome_stakes
-        # TODO: Add user_stakes
         outcome_stakes: [OutcomeStake]
+        user_stakes: [UserStake]
     }
 `;
 
