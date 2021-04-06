@@ -1,5 +1,6 @@
-import { Context } from "node:vm";
+import { Context } from "../../main";
 import { ResolutionWindow } from "../../models/ResolutionWindow";
+import { queryOutcomeStakes } from "../../services/OutcomeStakeService";
 
 export default {
     ResolutionWindow: {
@@ -8,7 +9,10 @@ export default {
                 return parent.outcome_stakes;
             }
 
-            return [];
+            return queryOutcomeStakes(context.db, {
+                data_request_id: parent.dr_id,
+                round: parent.round,
+            }).toArray();
         },
     },
 }

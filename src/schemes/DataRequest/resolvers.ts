@@ -2,6 +2,7 @@ import { FilterQuery } from "mongodb";
 import { Context } from "../../main";
 import { DataRequest } from "../../models/DataRequest";
 import { getDataRequestById, queryDataRequestsAsPagination } from "../../services/DataRequestService";
+import { getOracleConfigById } from "../../services/OracleConfigService";
 import { queryResolutionWindows } from "../../services/ResolutionWindowService";
 
 export default {
@@ -20,7 +21,7 @@ export default {
                 return parent.config;
             }
 
-            
+            return getOracleConfigById(context.db, parent.global_config_id);
         },
     },
     Query: {
