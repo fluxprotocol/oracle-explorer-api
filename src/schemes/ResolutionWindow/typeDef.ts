@@ -13,6 +13,7 @@ const typeDef = gql`
 
         # TODO: Add outcome_stakes
         # TODO: Add user_stakes
+        outcome_stakes: [OutcomeStake]
     }
 `;
 

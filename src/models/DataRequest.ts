@@ -1,3 +1,6 @@
+import { OracleConfig } from "./OracleConfig";
+import { ResolutionWindow } from "./ResolutionWindow";
+
 export interface DataRequestSource {
     end_point: string;
     source_path: string;
@@ -14,4 +17,8 @@ export interface DataRequest {
     target_contract: string;
     date: string;
     block_height: string;
+    global_config_id: string;
+
+    config: OracleConfig;
+    resolution_windows?: ResolutionWindow[];
 }

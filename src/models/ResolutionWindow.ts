@@ -1,3 +1,5 @@
+import { OutcomeStake } from "./OutcomeStake";
+
 export interface ResolutionWindow {
     id: string;
     dr_id: string;
@@ -6,4 +8,6 @@ export interface ResolutionWindow {
     bond_size: string;
     date: string;
     block_height: string;
+
+    outcome_stakes?: OutcomeStake[];
 }

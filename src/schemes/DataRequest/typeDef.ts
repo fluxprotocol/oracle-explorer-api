@@ -18,8 +18,10 @@ const typeDef = gql`
         target_contract: String
         date: String
         block_height: String
+        global_config_id: String
 
         resolution_windows: [ResolutionWindow]
+        config: OracleConfig
         # TODO: Add connections
     }
 
