@@ -1,0 +1,1 @@
+env NEAR_ENV=testnet near call oracle.flux-dev storage_deposit '{"account_id": "franklinwaller2.testnet"}' --keyPath ~/.near/testnet/validator_key.json --accountId franklinwaller2.testnet --amount 1 --gas=300000000000000

@@ -56,7 +56,8 @@ export async function getDataRequestById(db: Db, id: string): Promise<DataReques
             id,
         };
 
-        return collection.findOne<DataRequest>(query);
+        const result = await collection.findOne<DataRequest>(query);
+        return result;
     } catch (error) {
         console.error('[getDataRequestById]', error);
         return null;

@@ -1,0 +1,1 @@
+env NEAR_ENV=testnet near view oracle.flux-dev get_bond_balance '{"account_id": "franklinwaller2.testnet"}' --keyPath ~/.near/testnet/validator_key.json --accountId franklinwaller2.testnet

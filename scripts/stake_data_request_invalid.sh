@@ -1,0 +1,1 @@
+env NEAR_ENV=testnet near call oracle.flux-dev transfer_call_stake '{"receiver_id":"franklinwaller2.testnet","amount":"100","msg":"{\"StakeDataRequest\":{\"id\":\"0\",\"outcome\":\"Invalid\"}}"}' --keyPath ~/.near/testnet/validator_key.json --accountId franklinwaller2.testnet --gas=300000000000000

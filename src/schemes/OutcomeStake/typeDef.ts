@@ -5,7 +5,7 @@ const typeDef = gql`
         id: String
         data_request_id: String
         round: Int
-        # outcome: String
+        outcome: String
         total_stake: String
     }
 `;
