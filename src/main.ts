@@ -43,6 +43,7 @@ async function main() {
             resolutionWindow.resolvers,
             transactions.resolvers,
             whitelist.resolvers,
+            userStake.resolvers,
         ],
         tracing: true,
         debug: true,

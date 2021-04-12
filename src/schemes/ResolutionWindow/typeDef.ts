@@ -7,7 +7,7 @@ const typeDef = gql`
         round: Int
         end_time: String
         bond_size: String
-        # bonded_outcome: IETS
+        bonded_outcome: String
         date: String
         block_height: String
 

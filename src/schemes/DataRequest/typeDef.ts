@@ -12,7 +12,7 @@ const typeDef = gql`
         settlement_time: String
         outcomes: [String]
         requestor: String
-        # finalized_outcome: IETS
+        finalized_outcome: String
         initial_challenge_period: String
         final_arbitrator_triggered: Boolean
         target_contract: String

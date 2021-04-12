@@ -9,6 +9,10 @@ const typeDef = gql`
         account_id: String
         total_stake: String
     }
+
+    extend type Query {
+        getUserStakesByRequestId(id: String!, accountId: String): [UserStake]
+    }
 `;
 
 export default typeDef;

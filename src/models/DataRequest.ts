@@ -14,6 +14,7 @@ export interface DataRequest {
     requestor: string;
     initial_challenge_period: string;
     final_arbitrator_triggered: boolean;
+    finalized_outcome: null | string | { Answer: string };
     target_contract: string;
     date: string;
     block_height: string;

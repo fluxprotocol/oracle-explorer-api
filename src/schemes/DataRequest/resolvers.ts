@@ -3,7 +3,7 @@ import { Context } from "../../main";
 import { DataRequest } from "../../models/DataRequest";
 import { getDataRequestById, queryDataRequestsAsPagination } from "../../services/DataRequestService";
 import { getOracleConfigById } from "../../services/OracleConfigService";
-import { queryResolutionWindows } from "../../services/ResolutionWindowService";
+import { getResolutionWindowsByRequestId } from "../../services/ResolutionWindowService";
 
 export default {
     DataRequest: {
@@ -12,9 +12,7 @@ export default {
                 return parent.resolution_windows;
             }
 
-            return queryResolutionWindows(context.db, {
-                dr_id: parent.id,
-            }).toArray();
+            return getResolutionWindowsByRequestId(context.db, parent.id);
         },
         config: async (parent: DataRequest, args: {}, context: Context) => {
             if (parent.config) {
