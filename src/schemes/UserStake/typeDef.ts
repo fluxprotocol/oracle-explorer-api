@@ -8,10 +8,18 @@ const typeDef = gql`
         outcome: String
         account_id: String
         total_stake: String
+
+        data_request: DataRequest
+    }
+
+    type UserStakePaginationResult {
+        items: [UserStake]
+        total: Int
     }
 
     extend type Query {
         getUserStakesByRequestId(id: String!, accountId: String): [UserStake]
+        getUserStakes(accountId: String!, limit: Int, offset: Int): UserStakePaginationResult
     }
 `;
 

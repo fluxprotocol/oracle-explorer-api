@@ -9,6 +9,7 @@ import * as userStake from './schemes/UserStake';
 import * as outcomeStake from './schemes/OutcomeStake';
 import * as transactions from './schemes/Transaction';
 import * as whitelist from './schemes/WhitelistItem';
+import * as account from './schemes/Account';
 
 import bootDatabase from './database';
 import { APP_PORT } from './constants';
@@ -36,6 +37,7 @@ async function main() {
             outcomeStake.typeDef,
             transactions.typeDef,
             whitelist.typeDef,
+            account.typeDef,
         ],
         resolvers: [
             dataRequest.resolvers,
@@ -44,6 +46,7 @@ async function main() {
             transactions.resolvers,
             whitelist.resolvers,
             userStake.resolvers,
+            account.resolvers,
         ],
         tracing: true,
         debug: true,
