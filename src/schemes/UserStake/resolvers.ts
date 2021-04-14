@@ -2,6 +2,7 @@ import { Context } from "../../main";
 import { DataRequest } from "../../models/DataRequest";
 import { PaginationResult } from "../../models/PaginationResult";
 import { UserStake } from "../../models/UserStake";
+import { getClaimByRequestId } from "../../services/ClaimService";
 import { getDataRequestById } from "../../services/DataRequestService";
 import { transformOutcomeToString } from "../../services/OutcomeService";
 import { getUnclaimedUserStakes, getUserStakesByRequestId, queryUserStakesAsPagination } from "../../services/UserStakesService";
@@ -17,6 +18,14 @@ export default {
             }
             
             return getDataRequestById(context.db, parent.data_request_id);
+        },
+
+        async claim(parent: UserStake, args: {}, context: Context) {
+            if (parent.claim) {
+                return parent.claim;
+            }
+
+            return getClaimByRequestId(context.db, parent.account_id, parent.data_request_id);
         }
     },
     Query: {

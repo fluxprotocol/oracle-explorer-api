@@ -22,3 +22,18 @@ export function queryClaims(db: Db, query: FilterQuery<Claim>, options: Partial<
     
     return collection.aggregate(pipeline);
 }
+
+export async function getClaimByRequestId(db: Db, accountId: string, requestId: string): Promise<Claim | null> {
+    try {
+        const collection = db.collection<Claim>(CLAIM_COLLECTION_NAME);
+        const claim = await collection.findOne({
+            account_id: accountId,
+            data_request_id: requestId,
+        });
+    
+        return claim;
+    } catch(error) {
+        console.error('[getClaimByRequestId]', error);
+        return null;
+    }
+}

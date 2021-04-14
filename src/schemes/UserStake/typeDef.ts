@@ -10,6 +10,7 @@ const typeDef = gql`
         total_stake: String
 
         data_request: DataRequest
+        claim: Claim
     }
 
     type UserStakePaginationResult {

@@ -84,11 +84,15 @@ export async function getUserStakesByRequestId(db: Db, requestId: string, accoun
         data_request_id: requestId,
     };
 
+    const options: Partial<UserStakeQueryOptions> = {};
+
     if (accountId) {
         query.account_id = accountId;
+        options.includeClaim = true;
     }
 
-    const stakes = await queryUserStakes(db, query).toArray();
+    const stakes = await queryUserStakes(db, query, options).toArray();
+
     return stakes.map((stake) => ({
         ...stake,
         outcome: transformOutcomeToString(stake.outcome),
