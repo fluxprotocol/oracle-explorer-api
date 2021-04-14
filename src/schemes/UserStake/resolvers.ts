@@ -4,7 +4,7 @@ import { PaginationResult } from "../../models/PaginationResult";
 import { UserStake } from "../../models/UserStake";
 import { getDataRequestById } from "../../services/DataRequestService";
 import { transformOutcomeToString } from "../../services/OutcomeService";
-import { getUserStakesByRequestId, queryUserStakesAsPagination } from "../../services/UserStakesService";
+import { getUnclaimedUserStakes, getUserStakesByRequestId, queryUserStakesAsPagination } from "../../services/UserStakesService";
 
 export default {
     UserStake: {
@@ -31,6 +31,10 @@ export default {
                 limit: args.limit,
                 offset: args.offset,
             });
+        },
+
+        async getUnclaimedStakes(parent: {}, args: { accountId: string }, context: Context): Promise<UserStake[]>  {
+            return getUnclaimedUserStakes(context.db, args.accountId);
         }
     }
 }

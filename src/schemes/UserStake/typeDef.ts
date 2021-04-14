@@ -20,6 +20,7 @@ const typeDef = gql`
     extend type Query {
         getUserStakesByRequestId(id: String!, accountId: String): [UserStake]
         getUserStakes(accountId: String!, limit: Int, offset: Int): UserStakePaginationResult
+        getUnclaimedStakes(accountId: String!): [UserStake]
     }
 `;
 
