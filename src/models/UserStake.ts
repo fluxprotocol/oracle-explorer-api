@@ -1,3 +1,4 @@
+import { Claim } from "./Claim";
 import { DataRequest } from "./DataRequest";
 
 export interface UserStake {
@@ -9,4 +10,5 @@ export interface UserStake {
     total_stake: string;
 
     data_request?: DataRequest;
+    claim?: Claim;
 }
