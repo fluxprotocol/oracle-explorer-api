@@ -32,7 +32,7 @@ const typeDef = gql`
 
     extend type Query {
         getDataRequest(id: String!): DataRequest
-        getDataRequests(limit: Int, offset: Int): DataRequestPaginationResult
+        getDataRequests(limit: Int, offset: Int, onlyArbitratorRequests: Boolean): DataRequestPaginationResult
     }
 `;
 

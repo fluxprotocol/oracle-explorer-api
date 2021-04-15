@@ -27,8 +27,14 @@ export default {
             return getDataRequestById(context.db, args.id);
         },
         
-        getDataRequests: async (parent: {}, args: { limit: number, offset: number }, context: Context) => {
+        getDataRequests: async (parent: {}, args: { limit: number, offset: number, onlyArbitratorRequests: boolean }, context: Context) => {
             const query: FilterQuery<DataRequest> = {};
+
+            if (args.onlyArbitratorRequests) {
+                query['sources.0'] = {
+                    $exists: false
+                }
+            }
 
             return queryDataRequestsAsPagination(context.db, query, {
                 limit: args.limit,
