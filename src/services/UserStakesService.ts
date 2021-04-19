@@ -8,6 +8,7 @@ export const USER_STAKES_COLLECTION_NAME = 'user_stakes';
 export interface UserStakeQueryOptions extends PaginationFilters {
     includeDataRequest: boolean;
     includeClaim: boolean;
+    includeResolutionWindow: boolean;
 }
 
 export function queryUserStakes(db: Db, query: FilterQuery<UserStake>, options: Partial<UserStakeQueryOptions> = {}): AggregationCursor<UserStake> {
@@ -64,6 +65,21 @@ export function queryUserStakes(db: Db, query: FilterQuery<UserStake>, options: 
                 }
             },
         });
+
+        pipeline.push({
+            $unset: ['claims'],
+        });
+    }
+
+    if (options.includeResolutionWindow) {
+        pipeline.push({
+            $lookup: {
+                from: 'resolution_windows',
+                localField: 'data_request_id',
+                foreignField: 'dr_id',
+                as: 'resolution_windows',
+            }
+        });
     }
 
     if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
@@ -107,6 +123,7 @@ export async function queryUserStakesAsPagination(db: Db, query: FilterQuery<Use
         offset: options.offset ?? 0,
         includeDataRequest: true,
         includeClaim: false,
+        includeResolutionWindow: false,
     };
 
     const cursor = queryUserStakes(db, query, finalOptions);
@@ -129,6 +146,7 @@ export async function getUnclaimedUserStakes(db: Db, accountId: string): Promise
     const stakesCursor = queryUserStakes(db, query, {
         includeClaim: true,
         includeDataRequest: true,
+        includeResolutionWindow: true,
     });
 
     const result: UserStake[] = [];
@@ -147,8 +165,19 @@ export async function getUnclaimedUserStakes(db: Db, accountId: string): Promise
         const outcomeStr = transformOutcomeToString(stake.outcome);
         const finalizedOutcome = transformOutcomeToString(stake.data_request.finalized_outcome);
 
+        // The outcome was not correctly staken
         if (outcomeStr !== finalizedOutcome) {
-            continue;
+            // Check if the resolution window staked on was bonded
+            // If it was not a user can claim its stake back.
+            const resolutionWindowStakedOn = stake.resolution_windows?.find(rw => rw.round === stake.round);
+
+            if (!resolutionWindowStakedOn) {
+                continue;
+            }
+
+            if (resolutionWindowStakedOn.bonded_outcome !== null) {
+                continue;
+            }
         }
 
         result.push({

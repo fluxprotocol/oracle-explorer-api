@@ -1,5 +1,6 @@
 import { Claim } from "./Claim";
 import { DataRequest } from "./DataRequest";
+import { ResolutionWindow } from "./ResolutionWindow";
 
 export interface UserStake {
     id: string;
@@ -11,4 +12,5 @@ export interface UserStake {
 
     data_request?: DataRequest;
     claim?: Claim;
+    resolution_windows?: ResolutionWindow[];
 }
