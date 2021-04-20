@@ -30,9 +30,15 @@ const typeDef = gql`
         total: Int
     }
 
+    type DataRequestCursorResult {
+        items: [DataRequest]
+        next: String
+    }
+
     extend type Query {
         getDataRequest(id: String!): DataRequest
         getDataRequests(limit: Int, offset: Int, onlyArbitratorRequests: Boolean): DataRequestPaginationResult
+        getDataRequestsAsCursor(cursor: String, limit: Int): DataRequestCursorResult
     }
 `;
 

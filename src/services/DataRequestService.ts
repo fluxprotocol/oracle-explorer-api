@@ -5,7 +5,10 @@ import { transformOutcomeToString } from "./OutcomeService";
 
 export const DATA_REQUEST_COLLECTION_NAME = 'data_requests';
 
-export type DataRequestQueryOptions = PaginationFilters;
+export interface DataRequestQueryOptions extends PaginationFilters {
+    includeResolutionWindow: boolean;
+    sortOnDate: boolean;
+}
 
 export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, options: Partial<DataRequestQueryOptions> = {}): AggregationCursor<DataRequest> {
     const collection = db.collection<DataRequest>(DATA_REQUEST_COLLECTION_NAME);
@@ -14,12 +17,26 @@ export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, optio
         {
             $match: query,
         },
-        {
+    ];
+
+    if (options.sortOnDate) {
+        pipeline.push({
             $sort: {
                 date: -1,
             }
-        },
-    ];
+        });
+    }
+
+    if (options.includeResolutionWindow) {
+        pipeline.push({
+            $lookup: {
+                from: 'resolution_windows',
+                localField: 'id',
+                foreignField: 'dr_id',
+                as: 'resolution_windows',
+            }
+        });
+    }
 
     if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
         pipeline.push({
@@ -41,6 +58,8 @@ export async function queryDataRequestsAsPagination(db: Db, query: FilterQuery<D
             ...options,
             limit: options.limit ?? 10,
             offset: options.offset ?? 0,
+            includeResolutionWindow: false,
+            sortOnDate: true,
         };
     
         const cursor = queryDataRequests(db, query, finalOptions)
