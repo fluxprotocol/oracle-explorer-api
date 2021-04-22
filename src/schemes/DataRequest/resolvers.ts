@@ -48,9 +48,11 @@ export default {
 
         async getDataRequestsAsCursor(parent: {}, args: { limit: number, cursor: string }, context: Context) {
             const cursor = queryDataRequests(context.db, {
-                id: {
-                    $gt: args.cursor,
+                idInt: {
+                    $gt: Number(args.cursor),
                 }
+            }, {
+                includeResolutionWindow: true,
             }).limit(args.limit);
 
             const items = await cursor.toArray();

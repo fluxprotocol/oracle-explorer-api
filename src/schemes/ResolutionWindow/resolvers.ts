@@ -8,6 +8,10 @@ import { queryUserStakes } from "../../services/UserStakesService";
 
 export default {
     ResolutionWindow: {
+        bonded_outcome: (parent: ResolutionWindow) => {
+            return parent.bonded_outcome ? transformOutcomeToString(parent.bonded_outcome) : null;
+        },
+
         outcome_stakes: async (parent: ResolutionWindow, args: {}, context: Context): Promise<OutcomeStake[]> => {
             if (parent.outcome_stakes) {
                 return parent.outcome_stakes;

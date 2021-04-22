@@ -22,7 +22,7 @@ export interface Context {
 async function main() {
     console.info('🚀 Booting GraphQL server..');
 
-    const database = await bootDatabase();
+    const database = await bootDatabase();    
     const typeDef = gql`
         type Query
     `;

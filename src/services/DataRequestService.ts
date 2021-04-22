@@ -15,6 +15,13 @@ export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, optio
 
     const pipeline: object[] = [
         {
+            $addFields: {
+                idInt: {
+                    $convert: { input: '$id', to: 'int' },
+                }
+            },
+        },
+        {
             $match: query,
         },
     ];
@@ -62,7 +69,7 @@ export async function queryDataRequestsAsPagination(db: Db, query: FilterQuery<D
             sortOnDate: true,
         };
     
-        const cursor = queryDataRequests(db, query, finalOptions)
+        const cursor = queryDataRequests(db, query, finalOptions);
         const items = await cursor.toArray();
     
         return {
