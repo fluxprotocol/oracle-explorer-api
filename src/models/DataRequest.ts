@@ -9,6 +9,7 @@ export interface DataRequestSource {
 export interface DataRequest {
     id: string;
     sources: DataRequestSource[]
+    description: string;
     settlement_time: string;
     outcomes: string[];
     requestor: string;

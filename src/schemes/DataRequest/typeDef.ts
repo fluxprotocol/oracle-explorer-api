@@ -9,6 +9,7 @@ const typeDef = gql`
     type DataRequest {
         id: String
         sources: [DataRequestSource]
+        description: String
         settlement_time: String
         outcomes: [String]
         requestor: String
