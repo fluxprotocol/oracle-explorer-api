@@ -31,13 +31,23 @@ export default {
             return getDataRequestById(context.db, args.id);
         },
         
-        getDataRequests: async (parent: {}, args: { limit: number, offset: number, onlyArbitratorRequests: boolean }, context: Context) => {
+        getDataRequests: async (parent: {}, args: { limit: number, offset: number, onlyArbitratorRequests: boolean, tags?: string[], requestor?: string }, context: Context) => {
             const query: FilterQuery<DataRequest> = {};
 
             if (args.onlyArbitratorRequests) {
                 query['sources.0'] = {
                     $exists: false
                 }
+            }
+
+            if (args.tags) {
+                query.tags = {
+                    $in: args.tags,
+                }
+            }
+
+            if (args.requestor) {
+                query.requestor = args.requestor;
             }
 
             return queryDataRequestsAsPagination(context.db, query, {

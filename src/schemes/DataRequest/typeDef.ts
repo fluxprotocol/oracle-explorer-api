@@ -20,6 +20,7 @@ const typeDef = gql`
         date: String
         block_height: String
         global_config_id: String
+        tags: [String]
 
         resolution_windows: [ResolutionWindow]
         config: OracleConfig
@@ -38,7 +39,7 @@ const typeDef = gql`
 
     extend type Query {
         getDataRequest(id: String!): DataRequest
-        getDataRequests(limit: Int, offset: Int, onlyArbitratorRequests: Boolean): DataRequestPaginationResult
+        getDataRequests(limit: Int, offset: Int, onlyArbitratorRequests: Boolean, tags: [String], requestor: String): DataRequestPaginationResult
         getDataRequestsAsCursor(cursor: String, limit: Int): DataRequestCursorResult
     }
 `;

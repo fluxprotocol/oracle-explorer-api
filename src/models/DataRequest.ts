@@ -20,6 +20,7 @@ export interface DataRequest {
     date: string;
     block_height: string;
     global_config_id: string;
+    tags: null | string[];
 
     config: OracleConfig;
     resolution_windows?: ResolutionWindow[];
