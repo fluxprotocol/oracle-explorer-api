@@ -21,6 +21,7 @@ export interface DataRequest {
     block_height: string;
     global_config_id: string;
     tags: null | string[];
+    data_type: 'String' | 'Number';
 
     config: OracleConfig;
     resolution_windows?: ResolutionWindow[];

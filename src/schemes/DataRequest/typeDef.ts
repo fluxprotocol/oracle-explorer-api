@@ -13,6 +13,7 @@ const typeDef = gql`
         settlement_time: String
         outcomes: [String]
         requestor: String
+        data_type: String
         finalized_outcome: String
         initial_challenge_period: String
         final_arbitrator_triggered: Boolean
