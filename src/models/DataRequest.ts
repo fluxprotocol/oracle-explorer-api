@@ -1,4 +1,5 @@
 import { OracleConfig } from "./OracleConfig";
+import { Outcome } from "./Outcome";
 import { ResolutionWindow } from "./ResolutionWindow";
 
 export interface DataRequestSource {
@@ -15,13 +16,13 @@ export interface DataRequest {
     requestor: string;
     initial_challenge_period: string;
     final_arbitrator_triggered: boolean;
-    finalized_outcome: null | string | { Answer: string };
+    finalized_outcome: null | Outcome;
     target_contract: string;
     date: string;
     block_height: string;
     global_config_id: string;
     tags: null | string[];
-    data_type: 'String' | 'Number';
+    data_type: 'String' | { Number: string };
 
     config: OracleConfig;
     resolution_windows?: ResolutionWindow[];

@@ -11,6 +11,7 @@ export default {
         finalized_outcome: async (parent: DataRequest, args: {}, context: Context) => {
             return parent.finalized_outcome ? transformOutcomeToString(parent.finalized_outcome) : null;
         },
+
         resolution_windows: async (parent: DataRequest, args: {}, context: Context) => {
             if (parent.resolution_windows) {
                 return parent.resolution_windows;
@@ -18,6 +19,7 @@ export default {
 
             return getResolutionWindowsByRequestId(context.db, parent.id);
         },
+
         config: async (parent: DataRequest, args: {}, context: Context) => {
             if (parent.config) {
                 return parent.config;
@@ -25,6 +27,10 @@ export default {
 
             return getOracleConfigById(context.db, parent.global_config_id);
         },
+
+        data_type: async (parent: DataRequest) => {
+            return parent.data_type === "String" ? parent.data_type : JSON.stringify(parent.data_type);
+        }
     },
     Query: {
         getDataRequest: async (parent: {}, args: { id: string }, context: Context) => {

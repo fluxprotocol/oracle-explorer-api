@@ -1,3 +1,4 @@
+import { Outcome } from "./Outcome";
 import { OutcomeStake } from "./OutcomeStake";
 import { UserStake } from "./UserStake";
 
@@ -10,7 +11,7 @@ export interface ResolutionWindow {
     date: string;
     block_height: string;
     
-    bonded_outcome: null | string | { Answer: string };
+    bonded_outcome: null | Outcome;
     outcome_stakes?: OutcomeStake[];
     user_stakes?: UserStake[];
 }

@@ -1,7 +1,9 @@
+import { Outcome } from "./Outcome";
+
 export interface OutcomeStake {
     id: string;
     data_request_id: string;
     round: number;
-    outcome: string | { Answer: string };
+    outcome: Outcome;
     total_stake: string;
 }
