@@ -72,6 +72,7 @@ async function main() {
 
     app.options('/proxy/', (req, res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
+        res.status(200).send();
     });
 
     app.get('/proxy/', (req, res) => {
