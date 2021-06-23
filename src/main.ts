@@ -70,10 +70,15 @@ async function main() {
 
     const proxy = httpProxy.createProxyServer({});
 
+    app.options('/proxy/', (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+    });
+
     app.get('/proxy/', (req, res) => {
         try {
             const url = req.query.url;
-            console.log(url);
+            res.setHeader('Access-Control-Allow-Origin', '*');
+
             proxy.web(req, res, { target: url }, () => {
                 res.status(500).send('Server error');
             });
