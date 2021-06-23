@@ -72,6 +72,7 @@ async function main() {
 
     app.options('/proxy/', (req, res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', '*');
         res.status(200).send();
     });
 
@@ -79,6 +80,7 @@ async function main() {
         try {
             const url = req.query.url;
             res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Headers', '*');
 
             proxy.web(req, res, { target: url }, () => {
                 res.status(500).send('Server error');
