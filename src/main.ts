@@ -1,6 +1,7 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { Db } from 'mongodb';
 import express from 'express';
+import fetch from 'node-fetch';
 
 import * as dataRequest from './schemes/DataRequest';
 import * as oracleConfig from './schemes/OracleConfig';
@@ -17,6 +18,7 @@ import { APP_PORT } from './constants';
 
 // @ts-ignore
 import httpProxy from 'http-proxy';
+import bodyParser from 'body-parser';
 
 export interface Context {
     db: Db;
@@ -68,6 +70,8 @@ async function main() {
         }
     }));
 
+    app.use(bodyParser.json());
+
     const proxy = httpProxy.createProxyServer({});
 
     app.options('/proxy/', (req, res) => {
@@ -76,16 +80,22 @@ async function main() {
         res.status(200).send();
     });
 
-    app.get('/proxy/', (req, res) => {
+    app.post('/proxy/', async (req, res) => {
         try {
-            const url = req.query.url;
+            const url = req.query.url as string;
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Headers', '*');
 
-            proxy.web(req, res, { target: url }, () => {
-                res.status(500).send('Server error');
+            const result = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(req.body),
+                headers: {
+                    'Content-type': "application/json"
+                }
             });
 
+            const body = await result.text();
+            res.status(result.status).send(body);
         } catch (err) {
             console.error(err);
             res.status(500).send('Server error');
