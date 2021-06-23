@@ -15,6 +15,9 @@ import * as claim from './schemes/Claim';
 import bootDatabase from './database';
 import { APP_PORT } from './constants';
 
+// @ts-ignore
+import httpProxy from 'http-proxy';
+
 export interface Context {
     db: Db;
 }
@@ -64,6 +67,22 @@ async function main() {
             res.setHeader('Access-Control-Allow-Origin', '*');
         }
     }));
+
+    const proxy = httpProxy.createProxyServer({});
+
+    app.get('/proxy/', (req, res) => {
+        try {
+            const url = req.query.url;
+            console.log(url);
+            proxy.web(req, res, { target: url }, () => {
+                res.status(500).send('Server error');
+            });
+
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Server error');
+        }
+    });
 
     app.listen(APP_PORT, () => {
         console.info(`🚀 GraphQL listening on ${process.env.APP_PORT}`);
