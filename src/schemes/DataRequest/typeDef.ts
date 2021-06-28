@@ -22,10 +22,11 @@ const typeDef = gql`
         block_height: String
         global_config_id: String
         tags: [String]
+        fee: String
 
         resolution_windows: [ResolutionWindow]
         config: OracleConfig
-        # TODO: Add connections
+        whitelist_item: WhitelistItem
     }
 
     type DataRequestPaginationResult {

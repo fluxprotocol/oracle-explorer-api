@@ -7,6 +7,7 @@ export const DATA_REQUEST_COLLECTION_NAME = 'data_requests';
 
 export interface DataRequestQueryOptions extends PaginationFilters {
     includeResolutionWindow: boolean;
+    includeWhitelist: boolean;
     sortOnDate: boolean;
 }
 
@@ -45,6 +46,25 @@ export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, optio
         });
     }
 
+    if (options.includeWhitelist) {
+        pipeline.push({
+            $lookup: {
+                from: 'whitelist',
+                localField: 'requestor',
+                foreignField: 'contract_entry',
+                as: 'whitelist_item',
+            }
+        });
+
+        pipeline.push({
+            $addFields: {
+                whitelist_item: {
+                    '$arrayElemAt': ['$whitelist_item', 0],
+                }
+            }
+        });
+    }
+
     if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
         pipeline.push({
             '$limit': options.offset + options.limit,
@@ -67,6 +87,7 @@ export async function queryDataRequestsAsPagination(db: Db, query: FilterQuery<D
             offset: options.offset ?? 0,
             includeResolutionWindow: false,
             sortOnDate: true,
+            includeWhitelist: false,
         };
     
         const cursor = queryDataRequests(db, query, finalOptions);

@@ -2,6 +2,7 @@ import Big from "big.js";
 import { Db } from "mongodb";
 import { Account } from "../models/Account";
 import { queryUserStakes } from "./UserStakesService";
+import { getWhitelistItemById, queryWhitelist } from "./WhitelistService";
 
 export async function getAccountInfo(db: Db, accountId: string): Promise<Account> {
     try {
@@ -28,10 +29,15 @@ export async function getAccountInfo(db: Db, accountId: string): Promise<Account
             }
         });
 
+        const whitelistItem = await queryWhitelist(db, {
+            contract_entry: accountId,
+        }).toArray();
+
         return {
             active_staking: activeStaking.toString(),
             total_staked: totalStaked.toString(),
             total_claimed: totalClaimed.toString(),
+            whitelist_item: whitelistItem[0] ?? undefined,
         }
     } catch(error) {
         console.error('[getAccountInfo]', error);

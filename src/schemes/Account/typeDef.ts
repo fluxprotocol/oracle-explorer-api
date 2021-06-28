@@ -5,6 +5,7 @@ const typeDef = gql`
         active_staking: String
         total_staked: String
         total_claimed: String
+        whitelist_item: WhitelistItem
     }
 
     extend type Query {

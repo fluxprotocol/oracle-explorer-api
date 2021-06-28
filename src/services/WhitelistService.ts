@@ -62,3 +62,23 @@ export async function getWhitelistItemById(db: Db, id: string): Promise<Whitelis
         return null;
     }
 }
+
+export async function getWhitelistItemByContractId(db: Db, contractId: string): Promise<WhitelistItem | null> {
+    try {
+        const collection = db.collection<WhitelistItem>(WHITE_LIST_COLLECTION_NAME);
+        const query: FilterQuery<WhitelistItem> = {
+            contract_entry: contractId,
+        };
+
+        const item = await collection.findOne<WhitelistItem>(query);
+
+        if (item) {
+            item.custom_fee = JSON.stringify(item.custom_fee);
+        }
+
+        return item;
+    } catch (error) {
+        console.error('[getWhitelistItemByContractId]', error);
+        return null;
+    }
+}

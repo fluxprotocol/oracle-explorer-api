@@ -1,10 +1,12 @@
 import { FilterQuery } from "mongodb";
 import { Context } from "../../main";
 import { DataRequest } from "../../models/DataRequest";
+import { WhitelistItem } from "../../models/WhitelistItem";
 import { getDataRequestById, queryDataRequests, queryDataRequestsAsPagination } from "../../services/DataRequestService";
 import { getOracleConfigById } from "../../services/OracleConfigService";
 import { transformOutcomeToString } from "../../services/OutcomeService";
 import { getResolutionWindowsByRequestId } from "../../services/ResolutionWindowService";
+import { getWhitelistItemByContractId, getWhitelistItemById } from "../../services/WhitelistService";
 
 export default {
     DataRequest: {
@@ -30,7 +32,15 @@ export default {
 
         data_type: async (parent: DataRequest) => {
             return parent.data_type === "String" ? parent.data_type : JSON.stringify(parent.data_type);
-        }
+        },
+
+        async whitelist_item(parent: DataRequest, args: {}, context: Context): Promise<WhitelistItem | null> {
+            if (parent.whitelist_item) {
+                return parent.whitelist_item;
+            }
+
+            return getWhitelistItemByContractId(context.db, parent.requestor);
+        },
     },
     Query: {
         getDataRequest: async (parent: {}, args: { id: string }, context: Context) => {

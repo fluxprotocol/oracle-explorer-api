@@ -56,7 +56,7 @@ async function main() {
             account.resolvers,
         ],
         tracing: true,
-        debug: true,
+        debug: process.env.NODE_ENV !== 'production',
         context: {
             db: database,
         }

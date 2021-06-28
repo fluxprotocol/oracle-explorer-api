@@ -3,7 +3,10 @@ import { gql } from 'apollo-server';
 const typeDef = gql`
     type WhitelistItem {
         id: String
-        account_id: String
+        interface_name: String
+        contract_entry: String
+        custom_fee: String
+        code_base_url: String
         active: Boolean
         date: String
         block_height: String

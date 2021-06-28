@@ -1,6 +1,7 @@
 import { OracleConfig } from "./OracleConfig";
 import { Outcome } from "./Outcome";
 import { ResolutionWindow } from "./ResolutionWindow";
+import { WhitelistItem } from "./WhitelistItem";
 
 export interface DataRequestSource {
     end_point: string;
@@ -26,4 +27,5 @@ export interface DataRequest {
 
     config: OracleConfig;
     resolution_windows?: ResolutionWindow[];
+    whitelist_item?: WhitelistItem;
 }
