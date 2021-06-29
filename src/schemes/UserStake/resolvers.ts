@@ -19,14 +19,6 @@ export default {
             
             return getDataRequestById(context.db, parent.data_request_id);
         },
-
-        async claim(parent: UserStake, args: {}, context: Context) {
-            if (parent.claim) {
-                return parent.claim;
-            }
-
-            return getClaimByRequestId(context.db, parent.account_id, parent.data_request_id);
-        }
     },
     Query: {
         async getUserStakesByRequestId(parent: {}, args: { id: string, accountId?: string}, context: Context): Promise<UserStake[]> {

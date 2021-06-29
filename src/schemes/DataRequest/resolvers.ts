@@ -1,7 +1,9 @@
 import { FilterQuery } from "mongodb";
 import { Context } from "../../main";
+import { Claim } from "../../models/Claim";
 import { DataRequest } from "../../models/DataRequest";
 import { WhitelistItem } from "../../models/WhitelistItem";
+import { getClaimByRequestId } from "../../services/ClaimService";
 import { getDataRequestById, queryDataRequests, queryDataRequestsAsPagination } from "../../services/DataRequestService";
 import { getOracleConfigById } from "../../services/OracleConfigService";
 import { transformOutcomeToString } from "../../services/OutcomeService";
@@ -40,6 +42,10 @@ export default {
             }
 
             return getWhitelistItemByContractId(context.db, parent.requestor);
+        },
+
+        async claim(parent: DataRequest, args: { accountId: string }, context: Context): Promise<Claim | null> {
+            return getClaimByRequestId(context.db, args.accountId, parent.id);
         },
     },
     Query: {

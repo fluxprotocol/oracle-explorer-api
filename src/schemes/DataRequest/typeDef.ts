@@ -8,6 +8,7 @@ const typeDef = gql`
 
     type DataRequest {
         id: String
+        claim(accountId: String): Claim
         sources: [DataRequestSource]
         description: String
         settlement_time: String

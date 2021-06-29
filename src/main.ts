@@ -55,8 +55,8 @@ async function main() {
             userStake.resolvers,
             account.resolvers,
         ],
-        tracing: true,
-        debug: process.env.NODE_ENV !== 'production',
+        tracing: false,
+        debug: false,
         context: {
             db: database,
         }
