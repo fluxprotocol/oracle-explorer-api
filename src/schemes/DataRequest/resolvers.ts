@@ -2,12 +2,14 @@ import { FilterQuery } from "mongodb";
 import { Context } from "../../main";
 import { Claim } from "../../models/Claim";
 import { DataRequest } from "../../models/DataRequest";
+import { UserStake } from "../../models/UserStake";
 import { WhitelistItem } from "../../models/WhitelistItem";
 import { getClaimByRequestId } from "../../services/ClaimService";
 import { getDataRequestById, queryDataRequests, queryDataRequestsAsPagination } from "../../services/DataRequestService";
 import { getOracleConfigById } from "../../services/OracleConfigService";
 import { transformOutcomeToString } from "../../services/OutcomeService";
 import { getResolutionWindowsByRequestId } from "../../services/ResolutionWindowService";
+import { getUserStakesByRequestId } from "../../services/UserStakesService";
 import { getWhitelistItemByContractId, getWhitelistItemById } from "../../services/WhitelistService";
 
 export default {
@@ -46,6 +48,12 @@ export default {
 
         async claim(parent: DataRequest, args: { accountId: string }, context: Context): Promise<Claim | null> {
             return getClaimByRequestId(context.db, args.accountId, parent.id);
+        },
+
+        async account_stakes(parent: DataRequest, args: { accountId?: string }, context: Context): Promise<UserStake[]> {
+            if (!args.accountId) return [];
+
+            return getUserStakesByRequestId(context.db, parent.id, args.accountId);
         },
     },
     Query: {

@@ -26,7 +26,8 @@ const typeDef = gql`
         fee: String
         total_incorrect_staked: String
         total_correct_bonded_staked: String
-
+        
+        account_stakes(accountId: String): [UserStake]
         resolution_windows: [ResolutionWindow]
         config: OracleConfig
         whitelist_item: WhitelistItem
