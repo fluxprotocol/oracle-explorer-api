@@ -1,4 +1,5 @@
 import { AggregationCursor, Db, FilterQuery } from "mongodb";
+import { isSameOutcome } from "../models/Outcome";
 import { PaginationFilters, PaginationResult } from "../models/PaginationResult";
 import { UserStake } from "../models/UserStake";
 import { transformOutcomeToString } from "./OutcomeService";
@@ -162,24 +163,25 @@ export async function getUnclaimedUserStakes(db: Db, accountId: string): Promise
             continue;
         }
 
-        const outcomeStr = transformOutcomeToString(stake.outcome);
-        const finalizedOutcome = transformOutcomeToString(stake.data_request.finalized_outcome);
+        const resolutionWindowStakedOn = stake.resolution_windows?.find(rw => rw.round === stake.round);
 
-        // The outcome was not correctly staken
-        if (outcomeStr !== finalizedOutcome) {
-            // Check if the resolution window staked on was bonded
-            // If it was not a user can claim its stake back.
-            const resolutionWindowStakedOn = stake.resolution_windows?.find(rw => rw.round === stake.round);
+        // Sanity check, should never happen
+        if (!resolutionWindowStakedOn) {
+            continue;
+        }
 
-            if (!resolutionWindowStakedOn) {
-                continue;
-            }
-
-            if (resolutionWindowStakedOn.bonded_outcome !== null) {
-                continue;
+        if (resolutionWindowStakedOn.bonded_outcome) {
+            if (isSameOutcome(resolutionWindowStakedOn.bonded_outcome, stake.outcome)) {
+                // The window was bonded with our stake. We can only claim it back if the finalized outcome
+                // is the same as our current staked outcome. Otherwise it's slashed
+                if (!isSameOutcome(stake.data_request.finalized_outcome, stake.outcome)) {
+                    continue;
+                }
             }
         }
 
+        // There is no bonded outcome on the window or the user has staked correctly.
+        // Either way the user is able to claim their tokens back.
         result.push({
             ...stake,
             outcome: transformOutcomeToString(stake.outcome),

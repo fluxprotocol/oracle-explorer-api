@@ -2,7 +2,6 @@ import { Context } from "../../main";
 import { DataRequest } from "../../models/DataRequest";
 import { PaginationResult } from "../../models/PaginationResult";
 import { UserStake } from "../../models/UserStake";
-import { getClaimByRequestId } from "../../services/ClaimService";
 import { getDataRequestById } from "../../services/DataRequestService";
 import { transformOutcomeToString } from "../../services/OutcomeService";
 import { getUnclaimedUserStakes, getUserStakesByRequestId, queryUserStakesAsPagination } from "../../services/UserStakesService";
