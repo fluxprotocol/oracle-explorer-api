@@ -1,6 +1,12 @@
 import { gql } from 'apollo-server';
 
 const typeDef = gql`
+    type OracleFeeConfig {
+        flux_market_cap: String!
+        total_value_staked: String!
+        resolution_fee_percentage: Int!
+    }
+
     type OracleConfig {
         id: String
         gov: String
@@ -15,6 +21,7 @@ const typeDef = gql`
         resolution_fee_percentage: Int
         date: String
         block_height: String
+        fee: OracleFeeConfig
     }
 
     type OracleConfigPaginationResult {

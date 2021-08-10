@@ -12,4 +12,9 @@ export interface OracleConfig {
     resolution_fee_percentage: number;
     date: string;
     block_height: string;
+    fee: {
+        flux_market_cap: string;
+        total_value_staked: string;
+        resolution_fee_percentage: number;
+    }
 }
