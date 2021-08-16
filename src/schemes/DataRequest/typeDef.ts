@@ -24,6 +24,8 @@ const typeDef = gql`
         global_config_id: String
         tags: [String]
         fee: String
+        paid_fee: String
+
         total_incorrect_staked: String
         total_correct_bonded_staked: String
         

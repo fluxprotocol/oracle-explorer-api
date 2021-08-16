@@ -24,6 +24,7 @@ export interface DataRequest {
     global_config_id: string;
     tags: null | string[];
     data_type: 'String' | { Number: string };
+    paid_fee: string | null;
 
     config: OracleConfig;
     resolution_windows?: ResolutionWindow[];
