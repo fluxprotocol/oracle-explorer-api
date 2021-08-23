@@ -12,7 +12,7 @@ const typeDef = gql`
         gov: String
         final_arbitrator: String
         stake_token: String
-        bond_token: String
+        payment_token: String
         validity_bond: String
         max_outcomes: Int
         default_challenge_window_duration: String

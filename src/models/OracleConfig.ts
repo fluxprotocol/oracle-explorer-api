@@ -3,7 +3,7 @@ export interface OracleConfig {
     gov: string;
     final_arbitrator: string;
     stake_token: string;
-    bond_token: string;
+    payment_token: string;
     validity_bond: string;
     max_outcomes: number;
     default_challenge_window_duration: string;
