@@ -14,7 +14,13 @@ export interface DataRequest {
     description: string;
     settlement_time: string;
     outcomes: string[];
-    requestor: string;
+    requestor: {
+        interface_name: string;
+        account_id: string;
+        stake_multiplier: string | null;
+        code_base_url: string | null;
+    };
+    requestor_account_id: string;
     initial_challenge_period: string;
     final_arbitrator_triggered: boolean;
     finalized_outcome: null | Outcome;
