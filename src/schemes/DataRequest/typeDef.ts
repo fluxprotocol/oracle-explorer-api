@@ -18,7 +18,6 @@ const typeDef = gql`
         finalized_outcome: String
         initial_challenge_period: String
         final_arbitrator_triggered: Boolean
-        target_contract: String
         date: String
         block_height: String
         global_config_id: String

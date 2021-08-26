@@ -4,7 +4,7 @@ const typeDef = gql`
     type WhitelistItem {
         id: String
         interface_name: String
-        contract_entry: String
+        account_id: String
         custom_fee: String
         code_base_url: String
         active: Boolean

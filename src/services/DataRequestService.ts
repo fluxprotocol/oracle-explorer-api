@@ -51,7 +51,7 @@ export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, optio
             $lookup: {
                 from: 'whitelist',
                 localField: 'requestor',
-                foreignField: 'contract_entry',
+                foreignField: 'account_id',
                 as: 'whitelist_item',
             }
         });

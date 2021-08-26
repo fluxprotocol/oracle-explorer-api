@@ -67,7 +67,7 @@ export async function getWhitelistItemByContractId(db: Db, contractId: string): 
     try {
         const collection = db.collection<WhitelistItem>(WHITE_LIST_COLLECTION_NAME);
         const query: FilterQuery<WhitelistItem> = {
-            contract_entry: contractId,
+            account_id: contractId,
         };
 
         const item = await collection.findOne<WhitelistItem>(query);

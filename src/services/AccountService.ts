@@ -30,7 +30,7 @@ export async function getAccountInfo(db: Db, accountId: string): Promise<Account
         });
 
         const whitelistItem = await queryWhitelist(db, {
-            contract_entry: accountId,
+            account_id: accountId,
         }).toArray();
 
         return {
