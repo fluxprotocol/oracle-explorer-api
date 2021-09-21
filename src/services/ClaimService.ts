@@ -19,6 +19,18 @@ export function queryClaims(db: Db, query: FilterQuery<Claim>, options: Partial<
             }
         },
     ];
+
+    if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
+        pipeline.push({
+            '$limit': options.offset + options.limit,
+        });
+    }
+
+    if (typeof options.offset !== 'undefined') {
+        pipeline.push({
+            '$skip': options.offset,
+        });
+    }
     
     return collection.aggregate(pipeline);
 }

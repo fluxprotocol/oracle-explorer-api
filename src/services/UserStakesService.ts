@@ -26,6 +26,18 @@ export function queryUserStakes(db: Db, query: FilterQuery<UserStake>, options: 
         },
     ];
 
+    if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
+        pipeline.push({
+            '$limit': options.offset + options.limit,
+        });
+    }
+
+    if (typeof options.offset !== 'undefined') {
+        pipeline.push({
+            '$skip': options.offset,
+        });
+    }
+
     if (options.includeDataRequest) {
         pipeline.push({
             $lookup: {
@@ -80,16 +92,6 @@ export function queryUserStakes(db: Db, query: FilterQuery<UserStake>, options: 
                 foreignField: 'dr_id',
                 as: 'resolution_windows',
             }
-        });
-    }
-
-    if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
-        pipeline.push({
-            '$limit': options.offset + options.limit,
-        });
-
-        pipeline.push({
-            '$skip': options.offset,
         });
     }
 
