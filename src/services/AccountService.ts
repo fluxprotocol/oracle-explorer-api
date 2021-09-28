@@ -17,12 +17,12 @@ async function updateAccountInfo(db: Db, accountId: string) {
     });
 
     const userStakesOffset = accountInfo?.cache_offsets[USER_STAKES_COLLECTION_NAME] ?? 0;
-    const userStakes = await queryUserStakes(db, {
+    const userStakes = queryUserStakes(db, {
         account_id: accountId,
     }, {
         offset: userStakesOffset,
         includeDataRequest: true,
-    }).toArray();
+    });
 
     const claimedOffset = accountInfo?.cache_offsets[CLAIM_COLLECTION_NAME] ?? 0;
     const userClaims = await queryClaims(db, {
@@ -40,22 +40,38 @@ async function updateAccountInfo(db: Db, accountId: string) {
 
     userClaims.forEach((claim) => totalClaimed = totalClaimed.add(claim.payout));
 
-    userStakes.forEach((stake) => {
-        totalStaked = totalStaked.add(stake.total_stake);
+    let nextStakesOffset = userStakesOffset;
+    let userStakesIndex = 0;
+    let reachedNonFinalizedStake = false;
 
+    await userStakes.forEach((stake) => {
+        totalStaked = totalStaked.add(stake.total_stake);
+            
         if (stake.round > 0) {
             totalDisputes = totalDisputes.add(1);
         }
-
+        
         if (stake.data_request?.finalized_outcome) {
             if (!isSameOutcome(stake.outcome, stake.data_request.finalized_outcome)) {
                 timesSlashed = timesSlashed.add(1);
                 totalAmountSlashed = totalAmountSlashed.add(stake.total_stake);
             }
         }
+        
+        // Only move the index cursor when a data request is finalised
+        // Otherwise we'll get inaccurate data regarding the slashing
+        if (!stake.data_request?.finalized_outcome && !reachedNonFinalizedStake) {
+            reachedNonFinalizedStake = true;
+            nextStakesOffset += userStakesIndex;
+        }
+
+        userStakesIndex += 1;
     });
 
-    const nextStakesOffset = userStakesOffset + userStakes.length;
+    if (!reachedNonFinalizedStake) {
+        nextStakesOffset += userStakesIndex;
+    }
+
     const nextClaimedOffset = claimedOffset + userClaims.length;
 
     const finalAccountInfo: Account & DbCacheEntry = {
