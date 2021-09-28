@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.1.0...v1.2.0) (2021-09-28)
+
+
+### Features
+
+* **scheme:** Add new Analytics scheme ([2cdc933](https://github.com/fluxprotocol/oracle-exporer-api/commit/2cdc933b6e51f5d941f403571f109ed9de38e4f2))
+
+
+### Bug Fixes
+
+* **account:** Fix issue where slashed data was inaccurate ([3d75123](https://github.com/fluxprotocol/oracle-exporer-api/commit/3d75123b893182e7d2c22d308c191412fcd5156e))
+
 ## 1.1.0 (2021-09-21)
 
 
