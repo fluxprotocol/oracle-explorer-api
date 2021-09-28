@@ -16,13 +16,6 @@ export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, optio
 
     const pipeline: object[] = [
         {
-            $addFields: {
-                idInt: {
-                    $convert: { input: '$id', to: 'int' },
-                }
-            },
-        },
-        {
             $match: query,
         },
     ];
@@ -32,6 +25,16 @@ export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, optio
             $sort: {
                 date: -1,
             }
+        });
+    }
+
+    if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
+        pipeline.push({
+            '$limit': options.offset + options.limit,
+        });
+
+        pipeline.push({
+            '$skip': options.offset,
         });
     }
 
@@ -62,16 +65,6 @@ export function queryDataRequests(db: Db, query: FilterQuery<DataRequest>, optio
                     '$arrayElemAt': ['$whitelist_item', 0],
                 }
             }
-        });
-    }
-
-    if (typeof options.limit !== 'undefined' && typeof options.offset !== 'undefined') {
-        pipeline.push({
-            '$limit': options.offset + options.limit,
-        });
-
-        pipeline.push({
-            '$skip': options.offset,
         });
     }
 

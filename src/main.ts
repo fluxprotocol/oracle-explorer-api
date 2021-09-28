@@ -3,6 +3,7 @@ import { Db } from 'mongodb';
 import express from 'express';
 import fetch from 'node-fetch';
 
+import * as analytics from './schemes/Analytics';
 import * as dataRequest from './schemes/DataRequest';
 import * as oracleConfig from './schemes/OracleConfig';
 import * as resolutionWindow from './schemes/ResolutionWindow';
@@ -45,6 +46,7 @@ async function main() {
             whitelist.typeDef,
             account.typeDef,
             claim.typeDef,
+            analytics.typeDef,
         ],
         resolvers: [
             dataRequest.resolvers,
@@ -54,6 +56,7 @@ async function main() {
             whitelist.resolvers,
             userStake.resolvers,
             account.resolvers,
+            analytics.resolvers,
         ],
         tracing: false,
         debug: false,

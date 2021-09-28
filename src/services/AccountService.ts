@@ -2,6 +2,7 @@ import Big from "big.js";
 import { Db } from "mongodb";
 import { Account } from "../models/Account";
 import { DbCacheEntry } from "../models/DbCacheEntry";
+import { isSameOutcome } from "../models/Outcome";
 import { CLAIM_COLLECTION_NAME, queryClaims } from "./ClaimService";
 import { queryDataRequestsAsPagination } from "./DataRequestService";
 import { queryUserStakes, USER_STAKES_COLLECTION_NAME } from "./UserStakesService";
@@ -20,6 +21,7 @@ async function updateAccountInfo(db: Db, accountId: string) {
         account_id: accountId,
     }, {
         offset: userStakesOffset,
+        includeDataRequest: true,
     }).toArray();
 
     const claimedOffset = accountInfo?.cache_offsets[CLAIM_COLLECTION_NAME] ?? 0;
@@ -32,15 +34,25 @@ async function updateAccountInfo(db: Db, accountId: string) {
     let activeStaking = new Big(accountInfo?.active_staking ?? 0);
     let totalStaked = new Big(accountInfo?.total_staked ?? 0);
     let totalClaimed = new Big(accountInfo?.total_claimed ?? 0);
+    let totalDisputes = new Big(accountInfo?.total_disputes ?? 0);
+    let timesSlashed = new Big(accountInfo?.times_slashed ?? 0);
+    let totalAmountSlashed = new Big(accountInfo?.total_amount_slashed ?? 0);
 
     userClaims.forEach((claim) => totalClaimed = totalClaimed.add(claim.payout));
 
     userStakes.forEach((stake) => {
         totalStaked = totalStaked.add(stake.total_stake);
 
-        // if (stake.data_request && !stake.data_request.finalized_outcome) {
-        //     activeStaking = activeStaking.add(stake.total_stake);
-        // }
+        if (stake.round > 0) {
+            totalDisputes = totalDisputes.add(1);
+        }
+
+        if (stake.data_request?.finalized_outcome) {
+            if (!isSameOutcome(stake.outcome, stake.data_request.finalized_outcome)) {
+                timesSlashed = timesSlashed.add(1);
+                totalAmountSlashed = totalAmountSlashed.add(stake.total_stake);
+            }
+        }
     });
 
     const nextStakesOffset = userStakesOffset + userStakes.length;
@@ -51,6 +63,9 @@ async function updateAccountInfo(db: Db, accountId: string) {
         active_staking: activeStaking.toString(),
         total_staked: totalStaked.toString(),
         total_claimed: totalClaimed.toString(),
+        total_disputes: totalDisputes.toString(),
+        times_slashed: timesSlashed.toString(),
+        total_amount_slashed: totalAmountSlashed.toString(),
         has_stakes: totalStaked.gt(0),
         has_requests: false,
         cache_offsets: {
@@ -98,6 +113,9 @@ export async function getAccountInfo(db: Db, accountId: string): Promise<Account
             active_staking: '0',
             total_staked: '0',
             total_claimed: '0',
+            total_disputes: '0',
+            total_amount_slashed: '0',
+            times_slashed: '0',
             has_stakes: false,
             has_requests: false,
         }

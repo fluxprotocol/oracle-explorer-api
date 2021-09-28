@@ -5,6 +5,7 @@ export interface Claim {
     date: string;
     id: string;
     payout: string;
+    fee_profit: string;
     total_correct_bonded_staked: string;
     total_incorrect_staked: string;
     user_correct_stake: string;

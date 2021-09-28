@@ -5,6 +5,9 @@ const typeDef = gql`
         active_staking: String
         total_staked: String
         total_claimed: String
+        total_disputes: String
+        total_amount_slashed: String
+        times_slashed: String
         whitelist_item: WhitelistItem
         has_stakes: Boolean
         has_requests: Boolean

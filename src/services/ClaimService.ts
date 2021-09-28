@@ -15,7 +15,7 @@ export function queryClaims(db: Db, query: FilterQuery<Claim>, options: Partial<
         },
         {
             $sort: {
-                date: -1,
+                date: 1,
             }
         },
     ];

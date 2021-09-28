@@ -85,23 +85,5 @@ export default {
                 offset: args.offset,
             });
         },
-
-        async getDataRequestsAsCursor(parent: {}, args: { limit: number, cursor: string }, context: Context) {
-            const cursor = queryDataRequests(context.db, {
-                idInt: {
-                    $gt: Number(args.cursor),
-                }
-            }, {
-                includeResolutionWindow: true,
-            }).limit(args.limit);
-
-            const items = await cursor.toArray();
-            const lastItem = items[items.length - 1];
-            
-            return {
-                next: lastItem?.id ?? null,
-                items,
-            }
-        }
     },
 }
