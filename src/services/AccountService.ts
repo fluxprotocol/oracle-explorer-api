@@ -65,7 +65,9 @@ async function updateAccountInfo(db: Db, accountId: string) {
             nextStakesOffset += userStakesIndex;
         }
 
-        userStakesIndex += 1;
+        if (!reachedNonFinalizedStake) {
+            userStakesIndex += 1;
+        }
     });
 
     if (!reachedNonFinalizedStake) {
@@ -93,7 +95,13 @@ async function updateAccountInfo(db: Db, accountId: string) {
     await collection.updateOne({
         account_id: accountId,
     }, {
-        $set: finalAccountInfo,
+        $set: {
+            ...finalAccountInfo,
+            total_staked: reachedNonFinalizedStake ? finalAccountInfo.total_staked : totalStaked.toString(),
+            total_disputes: reachedNonFinalizedStake ? finalAccountInfo.total_disputes : totalDisputes.toString(),
+            total_amount_slashed: reachedNonFinalizedStake ? finalAccountInfo.total_amount_slashed : totalAmountSlashed.toString(),
+            times_slashed: reachedNonFinalizedStake ? finalAccountInfo.times_slashed : timesSlashed.toString(),        
+        }
     }, { upsert: true });
 
     return finalAccountInfo;
