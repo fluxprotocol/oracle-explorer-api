@@ -1,3 +1,4 @@
+import Big from "big.js";
 import { AggregationCursor, Db, FilterQuery } from "mongodb";
 import { isSameOutcome } from "../models/Outcome";
 import { PaginationFilters, PaginationResult } from "../models/PaginationResult";
@@ -65,9 +66,27 @@ export function queryUserStakes(db: Db, query: FilterQuery<UserStake>, options: 
         pipeline.push({
             $lookup: {
                 from: 'claims',
-                localField: 'data_request_id',
-                foreignField: 'data_request_id',
                 as: 'claims',
+                let: {
+                    'account_id': '$account_id',
+                    'data_request_id': '$data_request_id',
+                },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $eq: ['$data_request_id', '$$data_request_id'],
+                            },
+                        },
+                    },
+                    {
+                        $match: {
+                            $expr: {
+                                $eq: ['$account_id', '$$account_id'],
+                            }
+                        }
+                    }
+                ],
             }
         });
 
@@ -180,6 +199,10 @@ export async function getUnclaimedUserStakes(db: Db, accountId: string): Promise
                     continue;
                 }
             }
+        }
+        
+        if (new Big(stake.total_stake).lte(0)) {
+            continue;
         }
 
         // There is no bonded outcome on the window or the user has staked correctly.
