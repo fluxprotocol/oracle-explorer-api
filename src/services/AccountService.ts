@@ -38,26 +38,20 @@ async function updateAccountInfo(db: Db, accountId: string) {
     let timesSlashed = new Big(accountInfo?.times_slashed ?? 0);
     let totalAmountSlashed = new Big(accountInfo?.total_amount_slashed ?? 0);
 
+    // let activeStaking = new Big(0);
+    // let totalStaked = new Big(0);
+    // let totalClaimed = new Big(0);
+    // let totalDisputes = new Big(0);
+    // let timesSlashed = new Big(0);
+    // let totalAmountSlashed = new Big(0);
+
     userClaims.forEach((claim) => totalClaimed = totalClaimed.add(claim.payout));
 
     let nextStakesOffset = userStakesOffset;
     let userStakesIndex = 0;
     let reachedNonFinalizedStake = false;
 
-    await userStakes.forEach((stake) => {
-        totalStaked = totalStaked.add(stake.total_stake);
-            
-        if (stake.round > 0) {
-            totalDisputes = totalDisputes.add(1);
-        }
-        
-        if (stake.data_request?.finalized_outcome) {
-            if (!isSameOutcome(stake.outcome, stake.data_request.finalized_outcome)) {
-                timesSlashed = timesSlashed.add(1);
-                totalAmountSlashed = totalAmountSlashed.add(stake.total_stake);
-            }
-        }
-        
+    await userStakes.forEach((stake) => {    
         // Only move the index cursor when a data request is finalised
         // Otherwise we'll get inaccurate data regarding the slashing
         if (!stake.data_request?.finalized_outcome && !reachedNonFinalizedStake) {
@@ -68,6 +62,19 @@ async function updateAccountInfo(db: Db, accountId: string) {
         if (!reachedNonFinalizedStake) {
             userStakesIndex += 1;
         }
+
+        if (stake.round > 0) {
+            totalDisputes = totalDisputes.add(1);
+        }
+
+        if (stake.data_request?.finalized_outcome) {
+            if (!isSameOutcome(stake.outcome, stake.data_request.finalized_outcome)) {
+                timesSlashed = timesSlashed.add(1);
+                totalAmountSlashed = totalAmountSlashed.add(stake.total_stake);
+            }
+        }
+
+        totalStaked = totalStaked.add(stake.total_stake);
     });
 
     if (!reachedNonFinalizedStake) {
