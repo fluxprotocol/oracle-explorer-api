@@ -22,6 +22,7 @@ async function updateAccountInfo(db: Db, accountId: string) {
     }, {
         offset: userStakesOffset,
         includeDataRequest: true,
+        sortId: 1,
     });
 
     const claimedOffset = accountInfo?.cache_offsets[CLAIM_COLLECTION_NAME] ?? 0;
@@ -38,12 +39,10 @@ async function updateAccountInfo(db: Db, accountId: string) {
     let timesSlashed = new Big(accountInfo?.times_slashed ?? 0);
     let totalAmountSlashed = new Big(accountInfo?.total_amount_slashed ?? 0);
 
-    // let activeStaking = new Big(0);
-    // let totalStaked = new Big(0);
-    // let totalClaimed = new Big(0);
-    // let totalDisputes = new Big(0);
-    // let timesSlashed = new Big(0);
-    // let totalAmountSlashed = new Big(0);
+    let tempTotalStaked = new Big(totalStaked);
+    let tempTotalDisputes = new Big(totalDisputes);
+    let tempTimesSlashed = new Big(timesSlashed);
+    let tempTotalAmountSlashed = new Big(totalAmountSlashed);
 
     userClaims.forEach((claim) => totalClaimed = totalClaimed.add(claim.payout));
 
@@ -57,6 +56,12 @@ async function updateAccountInfo(db: Db, accountId: string) {
         if (!stake.data_request?.finalized_outcome && !reachedNonFinalizedStake) {
             reachedNonFinalizedStake = true;
             nextStakesOffset += userStakesIndex;
+
+            // Add remainders to the total
+            totalStaked = tempTotalStaked;
+            totalDisputes = tempTotalDisputes;
+            timesSlashed = tempTimesSlashed;
+            totalAmountSlashed = tempTotalAmountSlashed;
         }
 
         if (!reachedNonFinalizedStake) {
@@ -64,21 +69,27 @@ async function updateAccountInfo(db: Db, accountId: string) {
         }
 
         if (stake.round > 0) {
-            totalDisputes = totalDisputes.add(1);
+            tempTotalStaked = tempTotalDisputes.add(1);
         }
 
         if (stake.data_request?.finalized_outcome) {
             if (!isSameOutcome(stake.outcome, stake.data_request.finalized_outcome)) {
-                timesSlashed = timesSlashed.add(1);
-                totalAmountSlashed = totalAmountSlashed.add(stake.total_stake);
+                tempTimesSlashed = tempTimesSlashed.add(1);
+                tempTotalAmountSlashed = tempTotalAmountSlashed.add(stake.total_stake);
             }
         }
 
-        totalStaked = totalStaked.add(stake.total_stake);
+        tempTotalStaked = tempTotalStaked.add(stake.total_stake);
     });
 
     if (!reachedNonFinalizedStake) {
         nextStakesOffset += userStakesIndex;
+
+        // Add remainders to the total
+        totalStaked = tempTotalStaked;
+        totalDisputes = tempTotalDisputes;
+        timesSlashed = tempTimesSlashed;
+        totalAmountSlashed = tempTotalAmountSlashed;
     }
 
     const nextClaimedOffset = claimedOffset + userClaims.length;
@@ -104,10 +115,10 @@ async function updateAccountInfo(db: Db, accountId: string) {
     }, {
         $set: {
             ...finalAccountInfo,
-            total_staked: reachedNonFinalizedStake ? finalAccountInfo.total_staked : totalStaked.toString(),
-            total_disputes: reachedNonFinalizedStake ? finalAccountInfo.total_disputes : totalDisputes.toString(),
-            total_amount_slashed: reachedNonFinalizedStake ? finalAccountInfo.total_amount_slashed : totalAmountSlashed.toString(),
-            times_slashed: reachedNonFinalizedStake ? finalAccountInfo.times_slashed : timesSlashed.toString(),        
+            // total_staked: reachedNonFinalizedStake ? accountInfo?.total_staked : totalStaked.toString(),
+            // total_disputes: reachedNonFinalizedStake ? accountInfo?.total_disputes : totalDisputes.toString(),
+            // total_amount_slashed: reachedNonFinalizedStake ? accountInfo?.total_amount_slashed : totalAmountSlashed.toString(),
+            // times_slashed: reachedNonFinalizedStake ? accountInfo?.times_slashed : timesSlashed.toString(),        
         }
     }, { upsert: true });
 

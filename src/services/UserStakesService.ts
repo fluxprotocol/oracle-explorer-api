@@ -11,6 +11,7 @@ export interface UserStakeQueryOptions extends PaginationFilters {
     includeDataRequest: boolean;
     includeClaim: boolean;
     includeResolutionWindow: boolean;
+    sortId?: number;
 }
 
 export function queryUserStakes(db: Db, query: FilterQuery<UserStake>, options: Partial<UserStakeQueryOptions> = {}): AggregationCursor<UserStake> {
@@ -22,7 +23,7 @@ export function queryUserStakes(db: Db, query: FilterQuery<UserStake>, options: 
         },
         {
             $sort: {
-                _id: -1,
+                _id: options.sortId ?? -1,
             }
         },
     ];
