@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.0...v1.2.1) (2021-10-05)
+
+
+### Bug Fixes
+
+* **account:** Fix issue where slashes times was not correct ([80c7ffd](https://github.com/fluxprotocol/oracle-exporer-api/commit/80c7ffd519e9b228f695b69fe07fe347b698cabc))
+* **account:** Fix issue where values doubled ([3ed5203](https://github.com/fluxprotocol/oracle-exporer-api/commit/3ed5203ab1721e68c256d5cde1229b0955855642))
+* **claims:** Fix issue where claims where missing ([7e29b2c](https://github.com/fluxprotocol/oracle-exporer-api/commit/7e29b2c7486b0affa432702d22d2069deffa8a26))
+
 ## [1.2.0](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.1.0...v1.2.0) (2021-09-28)
 
 

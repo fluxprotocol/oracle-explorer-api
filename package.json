@@ -1,7 +1,7 @@
 {
     "name": "oracle-explorer-api",
     "description": "Explorer API for the Flux Oracle",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "main": "index.js",
     "devDependencies": {
         "@types/big.js": "^6.0.2",
