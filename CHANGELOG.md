@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.1...v1.2.2) (2021-10-06)
+
+
+### Bug Fixes
+
+* **account:** Fix issue where temp data was not returned ([a54ad01](https://github.com/fluxprotocol/oracle-exporer-api/commit/a54ad013419b6360a399b2d02f62ac301318bff4))
+
 ### [1.2.1](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.0...v1.2.1) (2021-10-05)
 
 
