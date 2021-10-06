@@ -69,7 +69,7 @@ async function updateAccountInfo(db: Db, accountId: string) {
         }
 
         if (stake.round > 0) {
-            tempTotalStaked = tempTotalDisputes.add(1);
+            tempTotalDisputes = tempTotalDisputes.add(1);
         }
 
         if (stake.data_request?.finalized_outcome) {
@@ -113,16 +113,17 @@ async function updateAccountInfo(db: Db, accountId: string) {
     await collection.updateOne({
         account_id: accountId,
     }, {
-        $set: {
-            ...finalAccountInfo,
-            // total_staked: reachedNonFinalizedStake ? accountInfo?.total_staked : totalStaked.toString(),
-            // total_disputes: reachedNonFinalizedStake ? accountInfo?.total_disputes : totalDisputes.toString(),
-            // total_amount_slashed: reachedNonFinalizedStake ? accountInfo?.total_amount_slashed : totalAmountSlashed.toString(),
-            // times_slashed: reachedNonFinalizedStake ? accountInfo?.times_slashed : timesSlashed.toString(),        
-        }
+        $set: finalAccountInfo,
     }, { upsert: true });
 
-    return finalAccountInfo;
+    // Give the remaineder back to the client
+    return {
+        ...finalAccountInfo,
+        total_staked: tempTotalStaked.toString(),
+        total_disputes: tempTotalDisputes.toString(),
+        times_slashed: tempTimesSlashed.toString(),
+        total_amount_slashed: tempTotalAmountSlashed.toString(),
+    };
 }
 
 export async function getAccountInfo(db: Db, accountId: string): Promise<Account> {
