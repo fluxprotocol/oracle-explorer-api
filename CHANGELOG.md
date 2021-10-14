@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.2...v1.2.3) (2021-10-14)
+
+
+### Bug Fixes
+
+* **analytics:** Fix issue where 0 data was not being shown ([a605c42](https://github.com/fluxprotocol/oracle-exporer-api/commit/a605c4266d5f1a20b0c049989ebc41ad05340560))
+* **analytics:** Fix issue where stakes where not showing with nulls ([caacd7b](https://github.com/fluxprotocol/oracle-exporer-api/commit/caacd7b1c5f5e8feb3ac058e9ab949df9a6f887c))
+
 ### [1.2.2](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.1...v1.2.2) (2021-10-06)
 
 
