@@ -4,7 +4,7 @@ import { Db } from "mongodb";
 import { AnalyticsPoint } from "../models/AccountAnalytics";
 import { queryClaims } from "./ClaimService";
 import { queryDataRequests } from "./DataRequestService";
-import { DateMetric, getDateMetricFormat } from "./DateService";
+import { createEmptyDataPoints, DateMetric, getDateMetricFormat } from "./DateService";
 
 export async function getAccountAnalytics(db: Db, accountId: string, beginTimestamp: number, endTimestamp: number, metric: DateMetric = DateMetric.week) {
     try {
@@ -54,7 +54,7 @@ export async function getInvalidRequestsAnalytics(db: Db, accountId: string, beg
             includeWhitelist: false,
         });
 
-        const dataPoints = new Map<string, AnalyticsPoint>();
+        const dataPoints: Map<string, AnalyticsPoint> = beginTimestamp === 0 ? new Map() : createEmptyDataPoints(new Date(beginTimestamp), new Date(endTimestamp), metric);
         const dateFormat = getDateMetricFormat(metric);
 
         await requests.forEach((request) => {

@@ -116,7 +116,7 @@ async function updateAccountInfo(db: Db, accountId: string) {
         $set: finalAccountInfo,
     }, { upsert: true });
 
-    // Give the remaineder back to the client
+    // Give the remainder back to the client
     return {
         ...finalAccountInfo,
         total_staked: tempTotalStaked.toString(),

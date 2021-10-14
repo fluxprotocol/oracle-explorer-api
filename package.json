@@ -27,6 +27,7 @@
         "start": "npm run build && node 'dist/src/main.js'",
         "build": "tsc -p .",
         "dev": "npm run build:dev",
+        "get-disputes": "npm run build && node dist/src/scripts/getDisputes.js",
         "build:dev": "nodemon 'src/main.ts' --exec 'ts-node' src/main.ts -e ts,graphql,json"
     },
     "keywords": [],
