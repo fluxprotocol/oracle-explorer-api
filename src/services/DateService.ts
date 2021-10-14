@@ -52,14 +52,14 @@ function addOneToDate(date: Date, metric: DateMetric): Date {
     }
 }
 
-export function createEmptyDataPoints(beginDate: Date, endDate: Date, metric: DateMetric) {
+export function createEmptyDataPoints(beginDate: Date, endDate: Date, metric: DateMetric, dataLength = 1) {
     const dataPoints = new Map<string, AnalyticsPoint>();
     const dateFormat = getDateMetricFormat(metric);
     let previousDateKey = format(beginDate, dateFormat);
 
     dataPoints.set(previousDateKey, {
         key: previousDateKey,
-        data: ['0'],
+        data: new Array(dataLength).fill('0'),
     });
 
     let currentDate = addOneToDate(beginDate, metric);
@@ -70,7 +70,7 @@ export function createEmptyDataPoints(beginDate: Date, endDate: Date, metric: Da
 
         dataPoints.set(previousDateKey, {
             key: previousDateKey,
-            data: ['0'],
+            data: new Array(dataLength).fill('0'),
         });
 
         if (endDate.getTime() < currentDate.getTime()) {

@@ -16,7 +16,7 @@ export async function getAccountAnalytics(db: Db, accountId: string, beginTimest
             },
         });
 
-        const dataPoints = new Map<string, AnalyticsPoint>();
+        const dataPoints: Map<string, AnalyticsPoint> = beginTimestamp === 0 ? new Map() : createEmptyDataPoints(new Date(beginTimestamp), new Date(endTimestamp), metric, 2);
         const dateFormat = getDateMetricFormat(metric);
 
         await userClaims.forEach((claim) => {
