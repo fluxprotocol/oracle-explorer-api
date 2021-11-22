@@ -43,7 +43,7 @@ export default {
                 return parent.whitelist_item;
             }
 
-            return getWhitelistItemByContractId(context.db, parent.requestor_account_id);
+            return getWhitelistItemByContractId(context.db, parent.requester_account_id);
         },
 
         async claim(parent: DataRequest, args: { accountId: string }, context: Context): Promise<Claim | null> {
@@ -77,7 +77,7 @@ export default {
             }
 
             if (args.requestor) {
-                query.requestor_account_id = args.requestor;
+                query.requester_account_id = args.requestor;
             }
 
             return queryDataRequestsAsPagination(context.db, query, {

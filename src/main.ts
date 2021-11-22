@@ -13,6 +13,7 @@ import * as transactions from './schemes/Transaction';
 import * as whitelist from './schemes/WhitelistItem';
 import * as account from './schemes/Account';
 import * as claim from './schemes/Claim';
+import * as validator from './schemes/Validators';
 
 import bootDatabase from './database';
 import { APP_PORT } from './constants';
@@ -47,6 +48,7 @@ async function main() {
             account.typeDef,
             claim.typeDef,
             analytics.typeDef,
+            validator.typeDef,
         ],
         resolvers: [
             dataRequest.resolvers,
@@ -57,6 +59,7 @@ async function main() {
             userStake.resolvers,
             account.resolvers,
             analytics.resolvers,
+            validator.resolvers,
         ],
         tracing: false,
         debug: false,

@@ -42,7 +42,7 @@ export async function getAccountAnalytics(db: Db, accountId: string, beginTimest
 export async function getInvalidRequestsAnalytics(db: Db, accountId: string, beginTimestamp: number, endTimestamp: number, metric: DateMetric = DateMetric.week) {
     try {
         const requests = queryDataRequests(db, {
-            requestor_account_id: accountId,
+            requester_account_id: accountId,
             finalized_outcome: 'Invalid',
             date: {
                 $gt: beginTimestamp.toString(),

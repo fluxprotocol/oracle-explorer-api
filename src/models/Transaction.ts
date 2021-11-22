@@ -7,5 +7,6 @@ export interface Transaction {
     date: string;
     block_height: string;
     extra_info?: string;
+    cap_creation_date: Date;
     type: 'Stake' | 'Unstake';
 }

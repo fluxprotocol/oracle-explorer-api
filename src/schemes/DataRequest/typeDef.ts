@@ -13,7 +13,7 @@ const typeDef = gql`
         description: String
         settlement_time: String
         outcomes: [String]
-        requestor_account_id: String
+        requester_account_id: String
         data_type: String
         finalized_outcome: String
         initial_challenge_period: String

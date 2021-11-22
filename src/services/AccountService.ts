@@ -130,7 +130,7 @@ export async function getAccountInfo(db: Db, accountId: string): Promise<Account
     try {
         const accountInfo = await updateAccountInfo(db, accountId);
         const requestorRequestsPromise = queryDataRequestsAsPagination(db, {
-            requestor_account_id: accountId,
+            requester_account_id: accountId,
         }, {
             includeResolutionWindow: false,
             includeWhitelist: false,

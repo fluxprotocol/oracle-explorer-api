@@ -20,7 +20,7 @@ export interface DataRequest {
         stake_multiplier: string | null;
         code_base_url: string | null;
     };
-    requestor_account_id: string;
+    requester_account_id: string;
     initial_challenge_period: string;
     final_arbitrator_triggered: boolean;
     finalized_outcome: null | Outcome;

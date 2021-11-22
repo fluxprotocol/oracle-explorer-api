@@ -13,7 +13,7 @@ export default async function bootDatabase(): Promise<Db> {
 
     await db.collection<DataRequest>(DATA_REQUEST_COLLECTION_NAME).createIndex({
         date: 1,
-        requestor_account_id: 1,
+        requester_account_id: 1,
         finalized_outcome: 1,
     })
 
