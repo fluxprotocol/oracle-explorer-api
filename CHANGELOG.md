@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.4](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.3...v1.2.4) (2021-11-25)
+
+
+### Bug Fixes
+
+* **requester:** Fix issue with requester not being filled ([9747dd8](https://github.com/fluxprotocol/oracle-exporer-api/commit/9747dd861fd8c27bae74de13278616d485cd4a33))
+
 ### [1.2.3](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.2...v1.2.3) (2021-10-14)
 
 
