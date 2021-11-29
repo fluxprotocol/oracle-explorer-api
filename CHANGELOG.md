@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.5](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.4...v1.2.5) (2021-11-29)
+
+
+### Bug Fixes
+
+* **account:** Fix issue where has_stakes was false for non finalised requests ([3256dd5](https://github.com/fluxprotocol/oracle-exporer-api/commit/3256dd5bdb518e477a3a3af5877fc3d17ce6bcf7))
+
 ### [1.2.4](https://github.com/fluxprotocol/oracle-exporer-api/compare/v1.2.3...v1.2.4) (2021-11-25)
 
 
