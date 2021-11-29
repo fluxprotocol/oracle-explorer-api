@@ -119,6 +119,7 @@ async function updateAccountInfo(db: Db, accountId: string) {
     // Give the remainder back to the client
     return {
         ...finalAccountInfo,
+        has_stakes: tempTotalStaked.gt(0),
         total_staked: tempTotalStaked.toString(),
         total_disputes: tempTotalDisputes.toString(),
         times_slashed: tempTimesSlashed.toString(),
