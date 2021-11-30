@@ -68,13 +68,20 @@ async function main() {
     const app = express();
     server.applyMiddleware({ app });
 
-    app.get('/*', s3Proxy({
-        bucket: process.env.S3_BUCKET_NAME,
-        accessKeyId: process.env.S3_ACCESS_KEY_ID,
-        secretAccessKey: process.env.S3_SECRET,
-        overrideCacheControl: 'max-age=100000',
-        defaultKey: 'index.html'
-    }));
+    app.get('/*', (req, res, next) => {
+        // Fix issue where query params could crash s3proxy
+        if (req.originalUrl.includes('?')) {
+            req.originalUrl = '';
+        }
+
+        return s3Proxy({
+            bucket: process.env.S3_BUCKET_NAME,
+            accessKeyId: process.env.S3_ACCESS_KEY_ID,
+            secretAccessKey: process.env.S3_SECRET,
+            overrideCacheControl: 'max-age=100000',
+            defaultKey: 'index.html'
+        })(req, res, next);
+    });
 
     app.listen(APP_PORT, () => {
         console.info(`🚀 GraphQL listening on ${process.env.APP_PORT}`);
