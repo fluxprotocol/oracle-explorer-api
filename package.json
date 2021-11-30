@@ -21,7 +21,8 @@
         "dotenv": "^8.2.0",
         "graphql": "^15.5.0",
         "http-proxy": "^1.18.1",
-        "mongodb": "^3.6.3"
+        "mongodb": "^3.6.3",
+        "s3-proxy": "^1.2.1"
     },
     "scripts": {
         "start": "npm run build && node 'dist/src/main.js'",
